@@ -22,14 +22,21 @@ from django.conf import settings
 # Initialize the Razorpay client
 
 
+# def view_pdf(request, filename):
+    # Construct the full file path
+    # filepath = os.path.join(settings.MEDIA_ROOT, filename)
+    # if not os.path.exists(filepath):
+    #     raise Http404("PDF file does not exist")
+    # return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
+
 def view_pdf(request, filename):
     # Construct the full file path
     filepath = os.path.join(settings.MEDIA_ROOT, filename)
     if not os.path.exists(filepath):
         raise Http404("PDF file does not exist")
-    return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
-
-
+    response = FileResponse(open(filepath, 'rb'), content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="{filename}"'
+    return response
 
 
 # from django.conf import settings
